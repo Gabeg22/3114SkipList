@@ -86,10 +86,10 @@ public class Rectangle {
      * @return true if the rectangle intersects with rec, false if not
      */
     public boolean intersect(Rectangle r2) {
-        return this.xCoordinate < r2.getxCoordinate() + r2.getWidth() &&
-               this.xCoordinate + this.width > r2.xCoordinate &&
-               this.yCoordinate < r2.yCoordinate + r2.height &&
-               this.yCoordinate + this.height > r2.yCoordinate;
+        return this.xCoordinate < r2.getxCoordinate() + r2.getWidth()
+            && this.xCoordinate + this.width > r2.xCoordinate
+            && this.yCoordinate < r2.yCoordinate + r2.height && this.yCoordinate
+                + this.height > r2.yCoordinate;
     }
 
 
@@ -104,11 +104,12 @@ public class Rectangle {
     @Override
     public boolean equals(Object rec) {
         if (rec instanceof Rectangle) {
-            Rectangle rectangle = (Rectangle) rec; // Cast the object to Rectangle
-            return this.xCoordinate == rectangle.getxCoordinate() &&
-                   this.yCoordinate == rectangle.getyCoordinate() &&
-                   this.width == rectangle.getWidth() &&
-                   this.height == rectangle.getHeight();
+            Rectangle rectangle = (Rectangle)rec; // Cast the object to
+                                                  // Rectangle
+            return this.xCoordinate == rectangle.getxCoordinate()
+                && this.yCoordinate == rectangle.getyCoordinate()
+                && this.width == rectangle.getWidth()
+                && this.height == rectangle.getHeight();
         }
         return false;
     }
@@ -123,10 +124,7 @@ public class Rectangle {
      */
     public String toString() {
         return String.format("Rectangle[x=%d, y=%d, width=%d, height=%d]",
-            this.xCoordinate,
-            this.yCoordinate,
-            this.width,
-            this.height);
+            this.xCoordinate, this.yCoordinate, this.width, this.height);
     }
 
 
@@ -145,9 +143,6 @@ public class Rectangle {
         if (xCoordinate + width > 1024) {
             return true;
         }
-        if (yCoordinate + height > 1024) {
-            return true;
-        }
-        return false;
+        return (yCoordinate + height > 1024);
     }
 }

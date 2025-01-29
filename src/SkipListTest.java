@@ -14,51 +14,55 @@ import student.TestableRandom;
  */
 
 public class SkipListTest extends TestCase {
-	
-	SkipList<String, Rectangle> sl;
-	
-	public void setUp() {
-		// TODO: implement setup
-		sl = new SkipList<String, Rectangle>();
-	}
+    private SkipList<String, Rectangle> sl;
 
-	/***
-	 * Example 1: Test `randomLevel` method with 
-	 * predetermined random values using `TestableRandom`
-	 */
-	public void testRandomLevelOne() {
-		TestableRandom.setNextBooleans(false);
-		sl = new SkipList<String, Rectangle>();
-		int randomLevelValue = sl.randomLevel();
-		
-		// This returns 1 because the first preset 
-		// random boolean is `false` which breaks 
-		// the `while condition inside the `randomLevel` method
-		int expectedLevelValue = 1;  
-		
-		// Compare the values
-		assertEquals(expectedLevelValue, randomLevelValue);
-	}
-	
-	/***
-	 * Example 2: Test `randomLevel` method with 
-	 * predetermined random values using `TestableRandom`
-	 */
-	public void testRandomLevelFour() {
-		TestableRandom.setNextBooleans(true, true, true, false, true, false);
-		sl = new SkipList<String, Rectangle>();
-		int randomLevelValue = sl.randomLevel();
+    /**
+     * Sets up the testing environment
+     */
+    public void setUp() {
+        sl = new SkipList<String, Rectangle>();
+    }
 
-		// This returns 4 because the fourth preset 
-		// random boolean is `false` which breaks 
-		// the `while condition inside the `randomLevel` method
-		int expectedLevelValue = 4; 
-		
-		// Compare the values
-		assertEquals(expectedLevelValue, randomLevelValue);
-	}
-	
+
+    /***
+     * Example 1: Test `randomLevel` method with
+     * predetermined random values using `TestableRandom`
+     */
+    public void testRandomLevelOne() {
+        TestableRandom.setNextInts(1);
+        // TestableRandom.setNextBooleans(false);
+        sl = new SkipList<String, Rectangle>();
+        int randomLevelValue = sl.randomLevel();
+
+        // This returns 0 because the first preset
+        // random boolean is `false` which breaks
+        // the `while condition inside the `randomLevel` method
+        int expectedLevelValue = 0;
+
+        // Compare the values
+        assertEquals(expectedLevelValue, randomLevelValue);
+    }
+
+
+    /***
+     * Example 2: Test `randomLevel` method with
+     * predetermined random values using `TestableRandom`
+     */
+    public void testRandomLevelFour() {
+        TestableRandom.setNextInts(0, 2, 4, 3, 4, 3);
+        // TestableRandom.setNextBooleans(true, true, true, false, true, false);
+        sl = new SkipList<String, Rectangle>();
+        int randomLevelValue = sl.randomLevel();
+
+        // This returns 4 because the fourth preset
+        // random boolean is `false` which breaks
+        // the `while condition inside the `randomLevel` method
+        int expectedLevelValue = 3;
+
+        // Compare the values
+        assertEquals(expectedLevelValue, randomLevelValue);
+    }
+
     // TODO: implement more tests
-    
 
 }
