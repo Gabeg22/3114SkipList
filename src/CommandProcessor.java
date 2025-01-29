@@ -50,7 +50,10 @@ public class CommandProcessor {
         // parameters by converting the string integers into
         // their Integer equivalent, trimming the whitespace
         if (command.equals("insert")) {
-            //Calls insert
+            Rectangle rec = new Rectangle(Integer.parseInt(arr[2]), Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), Integer.parseInt(arr[5]));
+            KVPair<String, Rectangle> pair = new KVPair<>(arr[1], rec);
+            Database data = new Database();
+            data.insert(pair);
         }
         // calls the appropriate remove method based on the
         // number of white space delimited strings in the line

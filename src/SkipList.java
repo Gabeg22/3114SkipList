@@ -35,10 +35,10 @@ public class SkipList<K extends Comparable<? super K>, V> implements Iterable<KV
 	// keep this method private. Since, we do not have any methods to call
 	// this method at this time, we keep this publicly accessible and testable.  
 	public int randomLevel() {
-		int level = 1;
-		while (rng.nextBoolean())
-			level++;
-		return level;
+	    int lev;
+	    for (lev = 0; Math.abs(rng.nextInt()) % 2 == 0; lev++) // ran is random generator
+	      ; // Do nothing
+	    return lev;
 	}
 
 
@@ -49,7 +49,13 @@ public class SkipList<K extends Comparable<? super K>, V> implements Iterable<KV
      *            key to be searched for
      */
     public ArrayList<KVPair<K, V>> search(K key) {
-        return null;
+        SkipNode x = head; // Dummy header node
+        for (int i = level; i >= 0; i--) // For each level...
+          while ((x.forward[i] != null) && (x.forward[i].element().getKey().compareTo(key) < 0)) // go forward
+            x = x.forward[i]; // Go one last step
+        x = x.forward[0]; // Move to actual record, if it exists
+        if ((x != null) && (x.element().getKey().compareTo(key) == 0)) return x.element(); // Got it
+        else return null; // Its not there
     }
 
 
