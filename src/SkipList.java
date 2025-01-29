@@ -50,11 +50,11 @@ public class SkipList<K extends Comparable<? super K>, V> implements Iterable<KV
      */
     public ArrayList<KVPair<K, V>> search(K key) {
         SkipNode x = head; // Dummy header node
-        for (int i = level; i >= 0; i--) // For each level...
+        for (int i = x.level; i >= 0; i--) // For each level...
           while ((x.forward[i] != null) && (x.forward[i].element().getKey().compareTo(key) < 0)) // go forward
             x = x.forward[i]; // Go one last step
         x = x.forward[0]; // Move to actual record, if it exists
-        if ((x != null) && (x.element().getKey().compareTo(key) == 0)) return x.element(); // Got it
+        if ((x != null) && (x.element().getKey().compareTo(key) == 0)) return null;//x.element(); // Got it
         else return null; // Its not there
     }
 
