@@ -48,6 +48,9 @@ public class Database {
         // Delegates the decision mostly to SkipList, only
         // writing the correct message to the console from
         // that
+        if (!pair.getValue().isInvalid()) {
+            list.insert(pair);
+        }
 
     }
 
@@ -60,7 +63,11 @@ public class Database {
      *            the name of the rectangle to be removed
      */
     public void remove(String name) {
-
+        // remove by key, the key is name
+        if (list.remove(name) == null) {
+            System.out.println("Rectangle with name " + name
+                + " does not exist");
+        }
     }
 
 
@@ -78,7 +85,11 @@ public class Database {
      *            height of the rectangle to be removed
      */
     public void remove(int x, int y, int w, int h) {
-
+        Rectangle rec = new Rectangle(x, y, w, h);
+        if (list.removeByValue(rec) == null) {
+            System.out.println("Rectangle with values x: " + x + " y:" + y
+                + " w: " + w + " h:" + h + " does not exist");
+        }
     }
 
 
@@ -132,7 +143,7 @@ public class Database {
      * will all be delegated to the SkipList.
      */
     public void dump() {
-
+        list.dump();
     }
 
 }

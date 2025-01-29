@@ -218,6 +218,18 @@ public class RectangleTest extends TestCase {
         assertTrue(r15.isInvalid());
         assertFalse(r16.isInvalid());
 
+        // add 4 more rectangles to test widths of 0 and negative widths and
+        // heights
+        Rectangle r17 = new Rectangle(0, 0, 0, 5);
+        Rectangle r18 = new Rectangle(0, 0, 1, 0);
+        Rectangle r19 = new Rectangle(0, 0, -1, 5);
+        Rectangle r20 = new Rectangle(0, 0, 5, -1);
+
+        assertTrue(r17.isInvalid());
+        assertTrue(r18.isInvalid());
+        assertTrue(r19.isInvalid());
+        assertTrue(r20.isInvalid());
+
     }
 
 }

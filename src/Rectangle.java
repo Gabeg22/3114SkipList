@@ -143,6 +143,9 @@ public class Rectangle {
         if (xCoordinate + width > 1024) {
             return true;
         }
+        if (width <= 0 || height <= 0) {
+            return true;
+        }
         return (yCoordinate + height > 1024);
     }
 }
