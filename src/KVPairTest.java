@@ -10,7 +10,11 @@ import student.TestCase;
  * @version 2024.1
  */
 public class KVPairTest extends TestCase {
-
+    
+    
+    /**
+     * Sets up the tests for this class
+     */
     public void setUp() {
         // TODO: implement setup
     }
@@ -18,3 +22,4 @@ public class KVPairTest extends TestCase {
     // TODO: implement tests
 
 }
+    

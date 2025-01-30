@@ -65,6 +65,7 @@ public class SkipList<K extends Comparable<? super K>, V>
                 .compareTo(key) < 0)) // go forward
                 x = x.forward[i]; // Go one last step
         x = x.forward[0]; // Move to actual record, if it exists
+
         while ((x != null) && (x.element().getKey().compareTo(key) == 0)) {
             results.add(x.element());
             x = x.forward[0];
@@ -122,10 +123,12 @@ public class SkipList<K extends Comparable<? super K>, V>
      */
     @SuppressWarnings("unchecked")
     public void adjustHead(int newLevel) {
+
         SkipNode temp = new SkipNode(null, newLevel);
         for (int i = 0; i <= head.level; i++)
             head.forward[i] = temp.forward[i];
         head = temp;
+
     }
 
 
@@ -133,8 +136,12 @@ public class SkipList<K extends Comparable<? super K>, V>
      * Removes the KVPair that is passed in as a parameter and returns true if
      * the pair was valid and false if not.
      * 
+<<<<<<< HEAD
      * @param key
      *            the Key to remove
+=======
+     * @param key the Key to remove
+>>>>>>> main
      * @return returns the removed pair if the pair was valid and null if not
      */
     @SuppressWarnings("unchecked")
