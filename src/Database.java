@@ -109,7 +109,14 @@ public class Database {
      *            height of the region
      */
     public void regionsearch(int x, int y, int w, int h) {
-
+        Rectangle rec = new Rectangle(x,y,w,h);
+        Iterator<KVPair<String, Rectangle>> it = list.iterator();
+        while (it.hasNext()) {
+            Rectangle check = it.next().getValue(); //returns the rectangle
+            if (check.intersect(rec)) {
+                System.out.println(check.toString());
+            }
+        }
     }
 
 
@@ -133,7 +140,7 @@ public class Database {
      *            name of the Rectangle to be searched for
      */
     public void search(String name) {
-
+        list.search(name);
     }
 
 
