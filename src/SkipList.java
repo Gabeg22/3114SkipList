@@ -141,10 +141,13 @@ public class SkipList<K extends Comparable<? super K>, V>
      * 
      * @param key
      *            the Key to remove
-     *           
+     * 
      * @param key
      *            the Key to remove
-     *         
+     * 
+     * 
+     * 
+     */
     @SuppressWarnings("unchecked")
     public KVPair<K, V> remove(K key) {
         SkipNode[] update = (SkipNode[])Array.newInstance(SkipNode.class,
@@ -244,12 +247,14 @@ public class SkipList<K extends Comparable<? super K>, V>
      */
     public void dump() {
         SkipNode curr = head; // Start at the first node
-        System.out.println("SkipList dump: ");    
-        System.out.println("Node with depth " + curr.forward.length +" value null");
+        System.out.println("SkipList dump: ");
+        System.out.println("Node with depth " + curr.forward.length
+            + " value null");
         curr = curr.forward[0];
         while (curr != null) {
             // Print the key, value, and the number of pointers
-            System.out.println("Node with depth " + curr.forward.length +" value " + curr.element().getValue().toString());
+            System.out.println("Node with depth " + curr.forward.length
+                + " value (" + curr.element().getKey()  + ", " + curr.element().getValue().toString() + ")");
 
             curr = curr.forward[0]; // Next node
         }
@@ -298,7 +303,6 @@ public class SkipList<K extends Comparable<? super K>, V>
         public KVPair<K, V> element() {
             return pair;
         }
-        
 
     }
 
