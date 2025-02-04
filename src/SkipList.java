@@ -1,6 +1,7 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import student.TestableRandom;
 
@@ -136,22 +137,21 @@ public class SkipList<K extends Comparable<? super K>, V>
      * Removes the KVPair that is passed in as a parameter and returns true if
      * the pair was valid and false if not.
      * 
-<<<<<<< HEAD
+     * 
+     * 
      * @param key
      *            the Key to remove
-=======
-     * @param key the Key to remove
->>>>>>> main
-     * @return returns the removed pair if the pair was valid and null if not
-     */
+     *           
+     * @param key
+     *            the Key to remove
+     *         
     @SuppressWarnings("unchecked")
     public KVPair<K, V> remove(K key) {
         SkipNode[] update = (SkipNode[])Array.newInstance(SkipNode.class,
             head.level + 1); // Track nodes to update
-        for (int i = 0; i <= head.level; i++)
-            update[i] = null;
 
         SkipNode x = head;
+
         for (int i = head.level; i >= 0; i--) { // Traverse to find the node and
                                                 // track updates
             while ((x.forward[i] != null) && (x.forward[i].element().getKey()
@@ -160,29 +160,33 @@ public class SkipList<K extends Comparable<? super K>, V>
             }
             update[i] = x;
         }
+
         x = x.forward[0]; // Move to the target node
+        // check to make sure x is not null before accessing otherwise might get
+        // a null ptr execept
+        if (x == null || x.element().getKey().compareTo(key) != 0) {
+            return null; // Key not found
+        }
         // If the
         // key is
         // found
-        if (x != null && x.element().getKey().compareTo(key) == 0) {
-            for (int i = 0; i <= head.level; i++) { // Remove references to the
-                                                    // node
-                if (update[i].forward[i] != x) {
-                    break;
-                }
-                update[i].forward[i] = x.forward[i]; // Pass the node
+        for (int i = 0; i <= head.level; i++) { // Remove references to the
+                                                // node
+            if (update[i].forward[i] != x) {
+                break;
             }
-            // Decrease
-            // levels
-            // if
-            // necessary
-            while (head.level > 0 && head.forward[head.level] == null)
-                head.level--;
-
-            size--;
-            return x.element(); // Return the removed element
+            update[i].forward[i] = x.forward[i]; // Pass the node
         }
-        return null; // If the key is not found
+        // Decrease
+        // levels
+        // if
+        // necessary
+        while (head.level > 0 && head.forward[head.level] == null) {
+            head.level--;
+        }
+
+        size--;
+        return x.element(); // Return the removed element
     }
 
 
@@ -239,16 +243,17 @@ public class SkipList<K extends Comparable<? super K>, V>
      * Prints out the SkipList in a human readable format to the console.
      */
     public void dump() {
-        SkipNode curr = head.forward[0]; // Start at the first node after the
-                                         // head
+        SkipNode curr = head; // Start at the first node
+        System.out.println("SkipList dump: ");    
+        System.out.println("Node with depth " + curr.forward.length +" value null");
+        curr = curr.forward[0];
         while (curr != null) {
             // Print the key, value, and the number of pointers
-            System.out.println("Node (Key: " + curr.element().getKey()
-                + ", Value: " + curr.element().getValue() + ", Pointers: "
-                + (curr.level + 1) + ")");
+            System.out.println("Node with depth " + curr.forward.length +" value " + curr.element().getValue().toString());
 
             curr = curr.forward[0]; // Next node
         }
+        System.out.println("Skiplist size is " + size);
     }
 
     /**
@@ -293,6 +298,7 @@ public class SkipList<K extends Comparable<? super K>, V>
         public KVPair<K, V> element() {
             return pair;
         }
+        
 
     }
 
@@ -307,18 +313,17 @@ public class SkipList<K extends Comparable<? super K>, V>
 
         @Override
         public boolean hasNext() {
-            // TODO Auto-generated method stub
             return current.forward[0] != null;
         }
 
 
         @Override
         public KVPair<K, V> next() {
-            // TODO Auto-generated method stub
             if (!hasNext())
-                return null;
+                throw new NoSuchElementException();
             else
-                return current.forward[0].element();
+                current = current.forward[0];
+            return current.element();
         }
 
     }
