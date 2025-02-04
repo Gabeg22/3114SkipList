@@ -137,20 +137,19 @@ public class SkipList<K extends Comparable<? super K>, V>
      * Removes the KVPair that is passed in as a parameter and returns true if
      * the pair was valid and false if not.
      * 
-     * <<<<<<< HEAD
+     * 
      * 
      * @param key
      *            the Key to remove
-     *            =======
+     *           
      * @param key
      *            the Key to remove
-     *            >>>>>>> main
-     * @return returns the removed pair if the pair was valid and null if not
-     */
+     *         
     @SuppressWarnings("unchecked")
     public KVPair<K, V> remove(K key) {
         SkipNode[] update = (SkipNode[])Array.newInstance(SkipNode.class,
             head.level + 1); // Track nodes to update
+
         SkipNode x = head;
 
         for (int i = head.level; i >= 0; i--) { // Traverse to find the node and
