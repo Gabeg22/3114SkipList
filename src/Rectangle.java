@@ -123,7 +123,7 @@ public class Rectangle {
      *         rectangle
      */
     public String toString() {
-        return String.format("Rectangle[x=%d, y=%d, width=%d, height=%d]",
+        return String.format("x=%d, y=%d, width=%d, height=%d",
             this.xCoordinate, this.yCoordinate, this.width, this.height);
     }
 
