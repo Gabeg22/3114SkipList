@@ -1,6 +1,7 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import student.TestableRandom;
 
@@ -314,10 +315,10 @@ public class SkipList<K extends Comparable<? super K>, V>
         @Override
         public KVPair<K, V> next() {
             if (!hasNext())
-                return null;
+                throw new NoSuchElementException();
             else
                 current = current.forward[0];
-                return current.forward[0].element();
+                return current.element();
         }
 
     }
