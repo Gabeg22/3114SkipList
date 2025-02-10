@@ -22,6 +22,7 @@ public class SkipList<K extends Comparable<? super K>, V>
     private SkipNode head; // First element (Sentinel Node)
     private int size; // number of entries in the Skip List
     private Random rng;
+    private int level;
 
     /**
      * Initializes the fields head, size and level
@@ -30,6 +31,7 @@ public class SkipList<K extends Comparable<? super K>, V>
         head = new SkipNode(null, 0);
         size = 0;
         this.rng = new TestableRandom();
+        level = -1;
     }
 
 
@@ -94,26 +96,26 @@ public class SkipList<K extends Comparable<? super K>, V>
     public void insert(KVPair<K, V> it) {
         K key = it.getKey();
         int newLevel = randomLevel(); // New node's level
-        if (newLevel > head.level) // If new node is deeper
-            adjustHead(newLevel); // adjust the header
+        if (newLevel > level) { // If new node is deeper
+          adjustHead(newLevel); // adjust the header
+        }
         // Track end of level
         SkipNode[] update = (SkipNode[])Array.newInstance(SkipNode.class,
-            head.level + 1);
+            level + 1);
         SkipNode x = head; // Start at header node
-        for (int i = head.level; i >= 0; i--) { // Find insert position
-            while ((x.forward[i] != null) && (x.forward[i].element().getKey()
-                .compareTo(key) < 0))
-                x = x.forward[i];
-            update[i] = x; // Track previous node at this level
+        for (int i = level; i >= 0; i--) { // Find insert position
+          while ((x.forward[i] != null) && (x.forward[i].element().getKey().compareTo(key) < 0)) {
+            x = x.forward[i];
+          }
+          update[i] = x; // Track end at level i
         }
-        SkipNode newN = new SkipNode(it, newLevel);
+        x = new SkipNode(it, newLevel);
         for (int i = 0; i <= newLevel; i++) { // Splice into list
-            newN.forward[i] = update[i].forward[i]; // Who newN points to
-            update[i].forward[i] = newN; // Who points to newN
+          x.forward[i] = update[i].forward[i]; // Who x points to
+          update[i].forward[i] = x; // Who points to x
         }
         size++; // Increment dictionary size
     }
-
 
     /**
      * Increases the number of levels in head so that no element has more
@@ -124,12 +126,12 @@ public class SkipList<K extends Comparable<? super K>, V>
      */
     @SuppressWarnings("unchecked")
     public void adjustHead(int newLevel) {
-
-        SkipNode temp = new SkipNode(null, newLevel);
-        for (int i = 0; i <= head.level; i++)
-            head.forward[i] = temp.forward[i];
-        head = temp;
-
+        SkipNode temp = head;
+        head = new SkipNode(null, newLevel);
+        for (int i = 0; i <= level; i++) {
+          head.forward[i] = temp.forward[i];
+        }
+        level = newLevel;
     }
 
 
@@ -292,6 +294,9 @@ public class SkipList<K extends Comparable<? super K>, V>
             forward = (SkipNode[])Array.newInstance(SkipList.SkipNode.class,
                 level + 1);
             this.level = level;
+            for (int i = 0; i < level; i++) {
+                forward[i] = null;
+            }
         }
 
 

@@ -141,4 +141,25 @@ public class SkipListTest extends TestCase {
         assertEquals(sl.size(), 1);
     }
 
+    
+    public void testRemoveByValue() {
+        // remove from empty list
+        Rectangle test = new Rectangle(0, 0, 10, 10);
+        KVPair<String, Rectangle> pair = new KVPair<String, Rectangle>("b",
+            test);
+        sl.insert(pair);
+        assertEquals(sl.size(), 1);
+        sl.removeByValue(test);
+        assertEquals(sl.size(), 0);
+
+        // remove from length 2 but from head
+        KVPair<String, Rectangle> pair2 = new KVPair<String, Rectangle>("c",
+            test);
+        sl.insert(pair);
+        sl.insert(pair2);
+        assertEquals(sl.size(), 2);
+        sl.remove("b");
+        assertEquals(sl.size(), 1);
+    }
+
 }
