@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -50,6 +51,12 @@ public class Database {
         // that
         if (!pair.getValue().isInvalid()) {
             list.insert(pair);
+            System.out.println("Rectangle inserted: (" + pair.getKey() + ", "
+                + pair.getValue().toString() + ")");
+        }
+        else {
+            System.out.println("Rectangle rejected: (" + pair.getKey() + ", "
+                + pair.getValue().toString() + ")");
         }
 
     }
@@ -109,7 +116,22 @@ public class Database {
      *            height of the region
      */
     public void regionsearch(int x, int y, int w, int h) {
-
+        Rectangle rec = new Rectangle(x, y, w, h);
+        if (rec.isInvalid()) {
+            System.out.println("Rectangle rejected: (" + rec.toString() + ")");
+            return;
+        }
+        Iterator<KVPair<String, Rectangle>> it = list.iterator();
+        System.out.println("Rectangles intersecting region (" + rec.toString()
+            + "):");
+        while (it.hasNext()) {
+            KVPair<String, Rectangle> check = it.next(); // returns the
+                                                         // rectangle
+            if (check.getValue().intersect(rec)) {
+                System.out.println("(" + check.getKey() + ", " + check
+                    .getValue().toString() + ")");
+            }
+        }
     }
 
 
@@ -121,7 +143,36 @@ public class Database {
      * Rectangles.
      */
     public void intersections() {
+        // an array list of rectangles
+        System.out.println("Intersection pairs: ");
+        ArrayList<KVPair<String, Rectangle>> rectangles = new ArrayList<>();
 
+        // add all the rectangles to the original list
+        Iterator<KVPair<String, Rectangle>> it = list.iterator();
+        while (it.hasNext()) {
+            rectangles.add(it.next());
+        }
+
+        for (int a = 0; a < rectangles.size(); a++) {
+            KVPair<String, Rectangle> outerRectPair = rectangles.get(a);
+            Rectangle outerRect = outerRectPair.getValue();
+
+            for (int b = a + 1; b < rectangles.size(); b++) {
+                KVPair<String, Rectangle> innerRectPair = rectangles.get(b);
+                Rectangle innerRect = innerRectPair.getValue();
+
+                if (innerRect.intersect(outerRect)) {
+                    System.out.println(String.format(
+                        "(%s, %d, %d, %d, %d | %s, %d, %d, %d, %d)",
+                        innerRectPair.getKey(), innerRect.getxCoordinate(),
+                        innerRect.getyCoordinate(), innerRect.getWidth(),
+                        innerRect.getHeight(), outerRectPair.getKey(), outerRect
+                            .getxCoordinate(), outerRect.getyCoordinate(),
+                        outerRect.getWidth(), outerRect.getHeight()));
+
+                }
+            }
+        }
     }
 
 
@@ -133,7 +184,7 @@ public class Database {
      *            name of the Rectangle to be searched for
      */
     public void search(String name) {
-
+        list.search(name);
     }
 
 

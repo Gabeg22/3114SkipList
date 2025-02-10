@@ -51,11 +51,15 @@ public class CommandProcessor {
         // parameters by converting the string integers into
         // their Integer equivalent, trimming the whitespace
         if (command.equals("insert")) {
-            Rectangle rec = new Rectangle(Integer.parseInt(arr[2]), Integer
-                .parseInt(arr[3]), Integer.parseInt(arr[4]), Integer.parseInt(
-                    arr[5]));
-            KVPair<String, Rectangle> pair = new KVPair<>(arr[1], rec);
-            data.insert(pair);
+            if (arr.length < 5) {
+                System.out.println("Rectangle rejected: ");
+            }else {
+                Rectangle rec = new Rectangle(Integer.parseInt(arr[2]), Integer
+                    .parseInt(arr[3]), Integer.parseInt(arr[4]), Integer.parseInt(
+                        arr[5]));
+                KVPair<String, Rectangle> pair = new KVPair<>(arr[1], rec);
+                data.insert(pair);   
+            }
         }
         // calls the appropriate remove method based on the
         // number of white space delimited strings in the line

@@ -79,6 +79,7 @@ public class SkipListTest extends TestCase {
         assertEquals(expectedLevelValue, randomLevelValue);
     }
 
+
     public void testInsert() {
         // insert in empty list
         Rectangle test = new Rectangle(0, 0, 10, 10);
@@ -139,6 +140,7 @@ public class SkipListTest extends TestCase {
         sl.remove("b");
         assertEquals(sl.size(), 1);
     }
+
     
     public void testRemoveByValue() {
         // remove from empty list
