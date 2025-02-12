@@ -79,7 +79,7 @@ public class CommandProcessor {
             }
         }
         else if (command.equals("regionsearch")) {
-            // calls the regionsearch method for a set of coordinates
+            // calls the region search method for a set of coordinates
             // the string integers in the line will be trimmed of whitespace
             data.regionsearch(Integer.parseInt(arr[1]), Integer.parseInt(
                 arr[2]), Integer.parseInt(arr[3]), Integer.parseInt(arr[4]));

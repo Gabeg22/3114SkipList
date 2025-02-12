@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import org.junit.Test;
-
+import java.util.NoSuchElementException;
 import student.TestCase;
 import student.TestableRandom;
 
@@ -45,6 +43,10 @@ public class SkipListTest extends TestCase {
     }
 
 
+    /***
+     * Example 2: Test `randomLevel` method with
+     * predetermined random values using `TestableRandom`
+     */
     public void testRandomLevelTwo() {
         TestableRandom.setNextInts(0, 1);
         // TestableRandom.setNextBooleans(false);
@@ -80,6 +82,9 @@ public class SkipListTest extends TestCase {
     }
 
 
+    /**
+     * Test insert()
+     */
     public void testInsert() {
         // insert in empty list
         Rectangle test = new Rectangle(0, 0, 10, 10);
@@ -118,48 +123,153 @@ public class SkipListTest extends TestCase {
         search = sl.search("a");
         assertEquals(4, sl.size());
         assertEquals(search.get(0), pair4);
+        search = sl.search("u");
+        assert (search.isEmpty());
     }
 
 
     public void testRemove() {
-        // remove from empty list
-        Rectangle test = new Rectangle(0, 0, 10, 10);
-        KVPair<String, Rectangle> pair = new KVPair<String, Rectangle>("b",
-            test);
+        Rectangle test = new Rectangle(1, 0, 2, 4);
+        KVPair<String, Rectangle> pair = new KVPair<>("a", test);
         sl.insert(pair);
-        assertEquals(sl.size(), 1);
-        sl.remove("b");
-        assertEquals(sl.size(), 0);
+        assertEquals(1, sl.size());
+        assertEquals(pair, sl.remove("a"));
+        assertEquals(0, sl.size());
 
-        // remove from length 2 but from head
-        KVPair<String, Rectangle> pair2 = new KVPair<String, Rectangle>("c",
-            test);
-        sl.insert(pair);
-        sl.insert(pair2);
-        assertEquals(sl.size(), 2);
-        sl.remove("b");
-        assertEquals(sl.size(), 1);
+        assertNull(sl.remove("b"));
     }
 
-    
-    public void testRemoveByValue() {
-        // remove from empty list
-        Rectangle test = new Rectangle(0, 0, 10, 10);
-        KVPair<String, Rectangle> pair = new KVPair<String, Rectangle>("b",
-            test);
-        sl.insert(pair);
-        assertEquals(sl.size(), 1);
-        sl.removeByValue(test);
-        assertEquals(sl.size(), 0);
-
-        // remove from length 2 but from head
-        KVPair<String, Rectangle> pair2 = new KVPair<String, Rectangle>("c",
-            test);
-        sl.insert(pair);
+    /**
+     * Test remove() with multiple elements and duplicate keys
+     */
+    public void testRemoveMultiple() {
+        Rectangle test1 = new Rectangle(1, 0, 2, 4);
+        Rectangle test2 = new Rectangle(2, 0, 4, 8);
+        KVPair<String, Rectangle> pair1 = new KVPair<>("a", test1);
+        KVPair<String, Rectangle> pair2 = new KVPair<>("a", test2);
+        sl.insert(pair1);
         sl.insert(pair2);
-        assertEquals(sl.size(), 2);
-        sl.remove("b");
-        assertEquals(sl.size(), 1);
+        assertEquals(2, sl.size());
+        assertNotNull(sl.remove("a"));
+        assertEquals(1, sl.size());
+    }
+
+    /**
+     * Test removeByValue() with existing and non-existing values
+     */
+    public void testRemoveByValue() {
+        Rectangle test = new Rectangle(1, 0, 2, 4);
+        KVPair<String, Rectangle> pair = new KVPair<>("a", test);
+        sl.insert(pair);
+        assertEquals(1, sl.size());
+        assertEquals(pair, sl.removeByValue(test));
+        assertEquals(0, sl.size());
+
+        assertNull(sl.removeByValue(new Rectangle(2, 0, 4, 8)));
+    }
+
+    /**
+     * Test removeByValue() with multiple matching values
+     */
+    public void testRemoveByValueMultiple() {
+        Rectangle test = new Rectangle(1, 0, 2, 4);
+        KVPair<String, Rectangle> pair1 = new KVPair<>("a", test);
+        KVPair<String, Rectangle> pair2 = new KVPair<>("b", test);
+        sl.insert(pair1);
+        sl.insert(pair2);
+        assertEquals(2, sl.size());
+        assertNotNull(sl.removeByValue(test));
+        assertEquals(1, sl.size());
+    }
+
+    /**
+     * Test remove() with invalid inputs
+     */
+    public void testRemoveInvalid() {
+        assertNull(sl.remove("c"));
+        Rectangle invalidRect = new Rectangle(-1, -1, 2, 4);
+        assertNull(sl.removeByValue(invalidRect));
+    }
+
+
+    /**
+     * Test iterator on an empty SkipList.
+     */
+    public void testEmptyIterator() {
+        Iterator<KVPair<String, Rectangle>> iterator = sl.iterator();
+        assertFalse("Iterator should not have next on an empty list", iterator
+            .hasNext());
+    }
+
+
+    /**
+     * Test iterator with a single element.
+     */
+    public void testSingleElementIterator() {
+        sl.insert(new KVPair<>("A", new Rectangle(1, 1, 2, 2)));
+        Iterator<KVPair<String, Rectangle>> iterator = sl.iterator();
+
+        assertTrue("Iterator should have next element", iterator.hasNext());
+        KVPair<String, Rectangle> pair = iterator.next();
+        assertEquals("A", pair.getKey());
+        assertFalse("Iterator should not have more elements", iterator
+            .hasNext());
+    }
+
+
+    /**
+     * Test iterator with multiple elements.
+     */
+    public void testMultipleElementsIterator() {
+        sl.insert(new KVPair<>("A", new Rectangle(1, 1, 2, 2)));
+        sl.insert(new KVPair<>("B", new Rectangle(2, 2, 3, 3)));
+        sl.insert(new KVPair<>("C", new Rectangle(3, 3, 4, 4)));
+
+        Iterator<KVPair<String, Rectangle>> iterator = sl.iterator();
+
+        assertTrue(iterator.hasNext());
+        assertEquals("A", iterator.next().getKey());
+
+        assertTrue(iterator.hasNext());
+        assertEquals("B", iterator.next().getKey());
+
+        assertTrue(iterator.hasNext());
+        assertEquals("C", iterator.next().getKey());
+
+        assertFalse("Iterator should be empty now", iterator.hasNext());
+    }
+
+
+    /**
+     * Test `next()` on an empty iterator (should throw NoSuchElementException).
+     */
+    public void testNextOnEmptyIterator() {
+        Iterator<KVPair<String, Rectangle>> iterator = sl.iterator();
+        try {
+            iterator.next();
+            fail("Expected NoSuchElementException");
+        }
+        catch (NoSuchElementException e) {
+            // Expected exception
+        }
+    }
+
+
+    /**
+     * Test `next()` when called more times than elements present.
+     */
+    public void testNextBeyondEnd() {
+        sl.insert(new KVPair<>("X", new Rectangle(5, 5, 6, 6)));
+        Iterator<KVPair<String, Rectangle>> iterator = sl.iterator();
+
+        assertEquals("X", iterator.next().getKey());
+        try {
+            iterator.next(); // Should throw NoSuchElementException
+            fail("Expected NoSuchElementException");
+        }
+        catch (NoSuchElementException e) {
+            // Expected exception
+        }
     }
 
 }
