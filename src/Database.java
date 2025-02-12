@@ -71,9 +71,13 @@ public class Database {
      */
     public void remove(String name) {
         // remove by key, the key is name
-        if (list.remove(name) == null) {
-            System.out.println("Rectangle with name " + name
-                + " does not exist");
+        KVPair<String, Rectangle> pair = list.remove(name);
+        if (pair == null) {
+            System.out.println("Rectangle not removed: " + name);
+        }
+        else {
+            System.out.println("Rectangle removed: (" + name + ", " + pair
+                .getValue() + ")");
         }
     }
 
@@ -93,9 +97,13 @@ public class Database {
      */
     public void remove(int x, int y, int w, int h) {
         Rectangle rec = new Rectangle(x, y, w, h);
-        if (list.removeByValue(rec) == null) {
-            System.out.println("Rectangle with values x: " + x + " y:" + y
-                + " w: " + w + " h:" + h + " does not exist");
+        KVPair<String, Rectangle> pair = list.removeByValue(rec);
+        if (pair == null) {
+            System.out.println("Rectangle rejected: " + rec.toString());
+        }
+        else {
+            System.out.println("Rectangle removed: (" + pair.getKey() + ", "
+                + pair.getValue() + ")");
         }
     }
 
@@ -117,7 +125,7 @@ public class Database {
      */
     public void regionsearch(int x, int y, int w, int h) {
         Rectangle rec = new Rectangle(x, y, w, h);
-        if (rec.isInvalid()) {
+        if (!rec.isValidRegion()) {
             System.out.println("Rectangle rejected: (" + rec.toString() + ")");
             return;
         }
@@ -163,13 +171,12 @@ public class Database {
 
                 if (innerRect.intersect(outerRect)) {
                     System.out.println(String.format(
-                        "(%s, %d, %d, %d, %d | %s, %d, %d, %d, %d)",
-                        innerRectPair.getKey(), innerRect.getxCoordinate(),
-                        innerRect.getyCoordinate(), innerRect.getWidth(),
-                        innerRect.getHeight(), outerRectPair.getKey(), outerRect
-                            .getxCoordinate(), outerRect.getyCoordinate(),
-                        outerRect.getWidth(), outerRect.getHeight()));
-
+                        "(%s, %d, %d, %d, %d) | (%s, %d, %d, %d, %d)",
+                        outerRectPair.getKey(), outerRect.getxCoordinate(),
+                        outerRect.getyCoordinate(), outerRect.getWidth(),
+                        outerRect.getHeight(), innerRectPair.getKey(), innerRect
+                            .getxCoordinate(), innerRect.getyCoordinate(),
+                        innerRect.getWidth(), innerRect.getHeight()));
                 }
             }
         }
@@ -184,7 +191,20 @@ public class Database {
      *            name of the Rectangle to be searched for
      */
     public void search(String name) {
-        list.search(name);
+        Boolean found = false;
+        ArrayList<KVPair<String, Rectangle>> rectangles = new ArrayList<>();
+        rectangles = list.search(name);
+        for (int i = 0; i < rectangles.size(); i++) {
+            if (!found) {
+                System.out.println("Rectangles found: ");
+            }
+            System.out.println("(" + rectangles.get(i).getKey() + ", "
+                + rectangles.get(i).getValue() + ")");
+            found = true;
+        }
+        if (!found) {
+            System.out.println("Rectangle not found: " +  "(" + name + ")");
+        }
     }
 
 

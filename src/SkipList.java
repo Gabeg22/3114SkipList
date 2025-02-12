@@ -40,9 +40,6 @@ public class SkipList<K extends Comparable<? super K>, V>
      * 
      * @return returns an int
      */
-    // TODO Ideally, you should call this method inside other methods
-    // keep this method private. Since, we do not have any methods to call
-    // this method at this time, we keep this publicly accessible and testable.
 
     public int randomLevel() {
         int lev;
@@ -97,25 +94,27 @@ public class SkipList<K extends Comparable<? super K>, V>
         K key = it.getKey();
         int newLevel = randomLevel(); // New node's level
         if (newLevel > level) { // If new node is deeper
-          adjustHead(newLevel); // adjust the header
+            adjustHead(newLevel); // adjust the header
         }
         // Track end of level
-        SkipNode[] update = (SkipNode[])Array.newInstance(SkipNode.class,
-            level + 1);
+        SkipNode[] update = (SkipNode[])Array.newInstance(SkipNode.class, level
+            + 1);
         SkipNode x = head; // Start at header node
         for (int i = level; i >= 0; i--) { // Find insert position
-          while ((x.forward[i] != null) && (x.forward[i].element().getKey().compareTo(key) < 0)) {
-            x = x.forward[i];
-          }
-          update[i] = x; // Track end at level i
+            while ((x.forward[i] != null) && (x.forward[i].element().getKey()
+                .compareTo(key) < 0)) {
+                x = x.forward[i];
+            }
+            update[i] = x; // Track end at level i
         }
         x = new SkipNode(it, newLevel);
         for (int i = 0; i <= newLevel; i++) { // Splice into list
-          x.forward[i] = update[i].forward[i]; // Who x points to
-          update[i].forward[i] = x; // Who points to x
+            x.forward[i] = update[i].forward[i]; // Who x points to
+            update[i].forward[i] = x; // Who points to x
         }
         size++; // Increment dictionary size
     }
+
 
     /**
      * Increases the number of levels in head so that no element has more
@@ -129,7 +128,7 @@ public class SkipList<K extends Comparable<? super K>, V>
         SkipNode temp = head;
         head = new SkipNode(null, newLevel);
         for (int i = 0; i <= level; i++) {
-          head.forward[i] = temp.forward[i];
+            head.forward[i] = temp.forward[i];
         }
         level = newLevel;
     }
@@ -144,10 +143,9 @@ public class SkipList<K extends Comparable<? super K>, V>
      * @param key
      *            the Key to remove
      * 
-     * @param key
-     *            the Key to remove
      * 
      * 
+     * @return returns the kv pair removed
      * 
      */
     @SuppressWarnings("unchecked")
@@ -202,6 +200,7 @@ public class SkipList<K extends Comparable<? super K>, V>
      *            the value of the KVPair to be removed
      * @return returns true if the removal was successful
      */
+    @SuppressWarnings("unchecked")
     public KVPair<K, V> removeByValue(V val) {
         SkipNode[] update = (SkipNode[])Array.newInstance(SkipNode.class,
             head.level + 1); // Track nodes to update
@@ -251,16 +250,17 @@ public class SkipList<K extends Comparable<? super K>, V>
         SkipNode curr = head; // Start at the first node
         System.out.println("SkipList dump: ");
         System.out.println("Node with depth " + curr.forward.length
-            + " value null");
+            + ", value null");
         curr = curr.forward[0];
         while (curr != null) {
             // Print the key, value, and the number of pointers
             System.out.println("Node with depth " + curr.forward.length
-                + " value (" + curr.element().getKey()  + ", " + curr.element().getValue().toString() + ")");
+                + ", value (" + curr.element().getKey() + ", " + curr.element()
+                    .getValue().toString() + ")");
 
             curr = curr.forward[0]; // Next node
         }
-        System.out.println("Skiplist size is " + size);
+        System.out.println("Skiplist size is: " + size);
     }
 
     /**
@@ -339,7 +339,6 @@ public class SkipList<K extends Comparable<? super K>, V>
 
     @Override
     public Iterator<KVPair<K, V>> iterator() {
-        // TODO Auto-generated method stub
         return new SkipListIterator();
     }
 

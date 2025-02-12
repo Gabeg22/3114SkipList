@@ -80,6 +80,9 @@ public class Rectangle {
 
     /**
      * Checks if the invoking rectangle intersects with rec.
+     * Needed to be modified becuase this only counts an intersection if there
+     * is overalpping regions
+     * it should not return true if it is simply a corner intersecting
      * 
      * @param r2
      *            Rectangle parameter
@@ -123,8 +126,8 @@ public class Rectangle {
      *         rectangle
      */
     public String toString() {
-        return String.format("%d, %d, %d, %d",
-            this.xCoordinate, this.yCoordinate, this.width, this.height);
+        return String.format("%d, %d, %d, %d", this.xCoordinate,
+            this.yCoordinate, this.width, this.height);
     }
 
 
@@ -147,5 +150,34 @@ public class Rectangle {
             return true;
         }
         return (yCoordinate + height > 1024);
+    }
+
+
+    /**
+     * Checks if the rectangle is a valid region rectangle, are the widht and
+     * height greater than 0 and is the area that is in the normal plane of
+     * existence.
+     * 
+     * @return returns a boolean value true if it is valid
+     */
+    public boolean isValidRegion() {
+        if (xCoordinate > 1024) {
+            return false;
+        }
+        if (yCoordinate > 1024) {
+            return false;
+        }
+        if (width <= 0) {
+            return false;
+        }
+        if (height <= 0) {
+            return false;
+        }
+        if (xCoordinate + width <= 0) {
+            return false;
+        }
+        return yCoordinate + height > 0; // if this is true its a valid region
+                                         // if not it is not and it will return
+                                         // false
     }
 }

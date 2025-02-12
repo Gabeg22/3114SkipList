@@ -45,6 +45,9 @@ public class SkipListTest extends TestCase {
     }
 
 
+    /**
+     * Test inserting with a testable random level of 2
+     */
     public void testRandomLevelTwo() {
         TestableRandom.setNextInts(0, 1);
         // TestableRandom.setNextBooleans(false);
@@ -80,6 +83,9 @@ public class SkipListTest extends TestCase {
     }
 
 
+    /**
+     * Test the insert method with several differnt cases
+     */
     public void testInsert() {
         // insert in empty list
         Rectangle test = new Rectangle(0, 0, 10, 10);
@@ -121,6 +127,9 @@ public class SkipListTest extends TestCase {
     }
 
 
+    /**
+     * tests remove with several different cases
+     */
     public void testRemove() {
         // remove from empty list
         Rectangle test = new Rectangle(0, 0, 10, 10);
@@ -141,7 +150,11 @@ public class SkipListTest extends TestCase {
         assertEquals(sl.size(), 1);
     }
 
-    
+
+    /**
+     * test removing a rectangle by value including when it is there and when it
+     * is not
+     */
     public void testRemoveByValue() {
         // remove from empty list
         Rectangle test = new Rectangle(0, 0, 10, 10);
