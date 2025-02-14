@@ -9,9 +9,9 @@ import student.TestableRandom;
  * This class implements SkipList data structure and contains an inner SkipNode
  * class which the SkipList will make an array of to store data.
  * 
- * @author CS Staff
+ * @author Danial Mahmoudi & Gabriel Gonzalez
  * 
- * @version 2024-01-22
+ * @version 2025-02-12
  * @param <K>
  *            Key
  * @param <V>
@@ -40,7 +40,6 @@ public class SkipList<K extends Comparable<? super K>, V>
      * 
      * @return returns an int
      */
-
     public int randomLevel() {
         int lev;
         for (lev = 0; Math.abs(rng.nextInt()) % 2 == 0; lev++) {
@@ -79,6 +78,14 @@ public class SkipList<K extends Comparable<? super K>, V>
      */
     public int size() {
         return size;
+    }
+
+
+    /**
+     * @return the highest level of the SkipList
+     */
+    public int level() {
+        return level;
     }
 
 
@@ -166,7 +173,7 @@ public class SkipList<K extends Comparable<? super K>, V>
 
         x = x.forward[0]; // Move to the target node
         // check to make sure x is not null before accessing otherwise might get
-        // a null ptr execept
+        // a null pointer exception
         if (x == null || x.element().getKey().compareTo(key) != 0) {
             return null; // Key not found
         }
@@ -255,7 +262,7 @@ public class SkipList<K extends Comparable<? super K>, V>
         while (curr != null) {
             // Print the key, value, and the number of pointers
             System.out.println("Node with depth " + curr.forward.length
-                + ", value (" + curr.element().getKey() + ", " + curr.element()
+                + " value (" + curr.element().getKey() + ", " + curr.element()
                     .getValue().toString() + ")");
 
             curr = curr.forward[0]; // Next node
@@ -312,21 +319,39 @@ public class SkipList<K extends Comparable<? super K>, V>
     }
 
 
+    /**
+     * This class implements the iterators for the SkipList data structure.
+     * 
+     * @author Danial Mahmoudi & Gabriel Gonzalez
+     * 
+     * @version 2025-02-12
+     */
     private class SkipListIterator implements Iterator<KVPair<K, V>> {
         private SkipNode current;
 
+        /**
+         * Creates an iterator and sets the current node to the head
+         */
         public SkipListIterator() {
             current = head;
         }
 
 
-        @Override
+        /**
+         * Returns whether there's a new value in the list
+         * 
+         * @return if there's a new value
+         */
         public boolean hasNext() {
             return current.forward[0] != null;
         }
 
 
-        @Override
+        /**
+         * Returns the next value in list
+         * 
+         * @return the next value
+         */
         public KVPair<K, V> next() {
             if (!hasNext())
                 throw new NoSuchElementException();
@@ -337,7 +362,9 @@ public class SkipList<K extends Comparable<? super K>, V>
 
     }
 
-    @Override
+    /**
+     * Public class for iterators, calls private iterator
+     */
     public Iterator<KVPair<K, V>> iterator() {
         return new SkipListIterator();
     }

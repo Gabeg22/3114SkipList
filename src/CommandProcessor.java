@@ -81,7 +81,7 @@ public class CommandProcessor {
             }
         }
         else if (command.equals("regionsearch")) {
-            // calls the regionsearch method for a set of coordinates
+            // calls the region search method for a set of coordinates
             // the string integers in the line will be trimmed of whitespace
             // check invalid argument
             if (arr.length == 5) {
