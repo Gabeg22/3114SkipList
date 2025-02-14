@@ -51,9 +51,6 @@ public class ProblemSpecTest extends TestCase {
         // Expected output from file
         String referenceOutput = readFile("P1test1Out.txt");
 
-        // Compare the two outputs
-        // TODO: uncomment the following line
-        // once you have implemented your project
         // assertFuzzyEquals(referenceOutput, output);
     }
 
@@ -79,9 +76,6 @@ public class ProblemSpecTest extends TestCase {
         // Expected output from file
         String referenceOutput = readFile("SyntaxTestOut.txt");
 
-        // Compare the two outputs
-        // TODO: uncomment the following line
-        // once you have implemented your project
-        // assertFuzzyEquals(referenceOutput, output);
+        assertFuzzyEquals(referenceOutput, output);
     }
 }

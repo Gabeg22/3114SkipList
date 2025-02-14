@@ -51,14 +51,16 @@ public class CommandProcessor {
         // parameters by converting the string integers into
         // their Integer equivalent, trimming the whitespace
         if (command.equals("insert")) {
-            if (arr.length < 5) {
+            if (arr.length < 6) {
                 System.out.println("Rectangle rejected: ");
-            }else {
+                return;
+            }
+            else {
                 Rectangle rec = new Rectangle(Integer.parseInt(arr[2]), Integer
-                    .parseInt(arr[3]), Integer.parseInt(arr[4]), Integer.parseInt(
-                        arr[5]));
+                    .parseInt(arr[3]), Integer.parseInt(arr[4]), Integer
+                        .parseInt(arr[5]));
                 KVPair<String, Rectangle> pair = new KVPair<>(arr[1], rec);
-                data.insert(pair);   
+                data.insert(pair);
             }
         }
         // calls the appropriate remove method based on the
@@ -81,8 +83,12 @@ public class CommandProcessor {
         else if (command.equals("regionsearch")) {
             // calls the region search method for a set of coordinates
             // the string integers in the line will be trimmed of whitespace
-            data.regionsearch(Integer.parseInt(arr[1]), Integer.parseInt(
-                arr[2]), Integer.parseInt(arr[3]), Integer.parseInt(arr[4]));
+            // check invalid argument
+            if (arr.length == 5) {
+                data.regionsearch(Integer.parseInt(arr[1]), Integer.parseInt(
+                    arr[2]), Integer.parseInt(arr[3]), Integer.parseInt(
+                        arr[4]));
+            }
 
         }
         else if (command.equals("intersections")) {

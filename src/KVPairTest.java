@@ -10,16 +10,38 @@ import student.TestCase;
  * @version 2024.1
  */
 public class KVPairTest extends TestCase {
-    
-    
+    // the private kvpair key for testing
+    private KVPair<String, Integer> test;
+
     /**
      * Sets up the tests for this class
      */
     public void setUp() {
-        // TODO: implement setup
+        test = new KVPair<String, Integer>("A", 10);
     }
 
-    // TODO: implement tests
+
+    /**
+     * Test the get key method
+     */
+    public void testGetKey() {
+        assertEquals(test.getKey(), "A");
+    }
+
+
+    /**
+     * Test get value method
+     */
+    public void testGetValue() {
+        assertEquals(test.getValue().intValue(), 10);
+    }
+
+
+    /**
+     * tests the to string method
+     */
+    public void testToString() {
+        assertEquals(test.toString(), "(A, 10)");
+    }
 
 }
-    

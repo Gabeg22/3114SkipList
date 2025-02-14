@@ -88,6 +88,14 @@ public class RectangleTest extends TestCase {
         assertEquals(false, rec.intersect(r14));
         assertEquals(false, rec.intersect(r15));
         assertEquals(false, rec.intersect(r16));
+
+        Rectangle r17 = new Rectangle(5, 5, 10, 10); // Intersects a corner,
+                                                     // should be false
+        assertEquals(false, rec.intersect(r17));
+
+        Rectangle r18 = new Rectangle(4, 4, 10, 10); // Intersects a bit more so
+                                                     // should be true
+        assertEquals(true, rec.intersect(r18));
     }
 
 
@@ -141,7 +149,7 @@ public class RectangleTest extends TestCase {
      * Tests the to string method
      */
     public void testToString() {
-        String expected = "Rectangle[x=0, y=0, width=5, height=5]";
+        String expected = "0, 0, 5, 5";
         assertEquals(expected, rec.toString());
     }
 
@@ -230,6 +238,88 @@ public class RectangleTest extends TestCase {
         assertTrue(r19.isInvalid());
         assertTrue(r20.isInvalid());
 
+        // some more tests to try and pass the mutati
+        // valid x coord invalid y
+        Rectangle r21 = new Rectangle(0, 1025, 0, 5);
+        Rectangle r22 = new Rectangle(0, -1, 0, 5);
+        assertTrue(r21.isInvalid());
+        assertTrue(r22.isInvalid());
+
+        // invalid x in both ways
+        Rectangle r23 = new Rectangle(-1, 1000, 0, 5);
+        Rectangle r24 = new Rectangle(1025, 1000, 0, 5);
+        assertTrue(r23.isInvalid());
+        assertTrue(r24.isInvalid());
+    }
+
+
+    /**
+     * Tests the is valid region command checking to make sure
+     * all conditions are tested
+     */
+    public void testIsValidRegion() {
+        // Test valid rectangle
+        Rectangle r1 = new Rectangle(100, 100, 50, 50); // Valid region
+        // Test invalid because xCoordinate is greater than 1024
+        Rectangle r2 = new Rectangle(1100, 100, 50, 50); // Invalid due to
+                                                         // xCoordinate > 1024
+        // Test invalid because yCoordinate is greater than 1024
+        Rectangle r3 = new Rectangle(100, 1100, 50, 50); // Invalid due to
+                                                         // yCoordinate > 1024
+        // Test invalid because width is less than or equal to 0
+        Rectangle r4 = new Rectangle(100, 100, -50, 50); // Invalid due to width
+                                                         // <= 0
+        // Test invalid because height is less than or equal to 0
+        Rectangle r5 = new Rectangle(100, 100, 50, -50); // Invalid due to
+                                                         // height <= 0
+        // Test invalid because xCoordinate + width is less than or equal to 0
+        Rectangle r6 = new Rectangle(-100, 100, 50, 50); // Invalid due to
+                                                         // xCoordinate + width
+                                                         // <= 0
+        // Test invalid because yCoordinate + height is less than or equal to 0
+        Rectangle r7 = new Rectangle(100, -100, 50, 50); // Invalid due to
+                                                         // yCoordinate + height
+                                                         // <= 0
+        // Test invalid because xCoordinate + width is exactly 0
+        Rectangle r8 = new Rectangle(-50, 100, 50, 50); // Invalid due to
+                                                        // xCoordinate + width
+                                                        // == 0
+        // Test invalid because yCoordinate + height is exactly 0
+        Rectangle r9 = new Rectangle(100, -50, 50, 50); // Invalid due to
+                                                        // yCoordinate + height
+                                                        // == 0
+        // Test invalid because both width and height are less than or equal to
+        // 0
+        Rectangle r10 = new Rectangle(100, 100, 0, 0); // Invalid due to width
+                                                       // and height <= 0
+        // Test invalid due to negative width and height
+        Rectangle r11 = new Rectangle(100, 100, -1, -1); // Invalid due to
+                                                         // negative width and
+                                                         // height
+        // Test invalid because xCoordinate and width are valid but yCoordinate
+        // + height is invalid
+        Rectangle r12 = new Rectangle(100, 1025, 50, 50); // Invalid due to
+                                                          // yCoordinate > 1024
+
+        // Test all invalid and valid rectangles
+        assertTrue(r1.isValidRegion()); // Valid rectangle
+        assertFalse(r2.isValidRegion()); // Invalid due to xCoordinate > 1024
+        assertFalse(r3.isValidRegion()); // Invalid due to yCoordinate > 1024
+        assertFalse(r4.isValidRegion()); // Invalid due to width <= 0
+        assertFalse(r5.isValidRegion()); // Invalid due to height <= 0
+        assertFalse(r6.isValidRegion()); // Invalid due to xCoordinate + width
+                                         // <= 0
+        assertFalse(r7.isValidRegion()); // Invalid due to yCoordinate + height
+                                         // <= 0
+        assertFalse(r8.isValidRegion()); // Invalid due to xCoordinate + width
+                                         // == 0
+        assertFalse(r9.isValidRegion()); // Invalid due to yCoordinate + height
+                                         // == 0
+        assertFalse(r10.isValidRegion()); // Invalid due to width and height <=
+                                          // 0
+        assertFalse(r11.isValidRegion()); // Invalid due to negative width and
+                                          // height
+        assertFalse(r12.isValidRegion()); // Invalid due to yCoordinate > 1024
     }
 
 }

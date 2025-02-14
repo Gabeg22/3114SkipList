@@ -128,6 +128,9 @@ public class SkipListTest extends TestCase {
     }
 
 
+    /**
+     * tests remove with several different cases
+     */
     public void testRemove() {
         Rectangle test = new Rectangle(1, 0, 2, 4);
         KVPair<String, Rectangle> pair = new KVPair<>("a", test);
